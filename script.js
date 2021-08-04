@@ -1,8 +1,7 @@
 let messagesToBePrinted = [];
 
 function getMessages() {
-  
-  const response = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages");
+  let response = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages");
 
   response.then((messages) => {
     messagesToBePrinted = messages.data;
@@ -13,28 +12,42 @@ function getMessages() {
 function printMessages() {
 
   const ulChat = document.querySelector("ul");
-  ulChat.innerHTML = ""
+  ulChat.innerHTML += "";
 
   messagesToBePrinted.forEach((message) => {
     if (message.type === "status") {
       ulChat.innerHTML += `
         <li class="message in-out">
-          ${message.text};
+          <p class="time">(${message.time})</p> 
+          <strong class="sender">${message.from}</strong> 
+          <p class="text">${message.text}</p>
         </li>
       `
     } else if (message.type === "message") {
       ulChat.innerHTML += `
         <li class="message">
-          ${message.text};
+          <p class="time">(${message.time})</p>
+          <strong class="sender">${message.from}</strong>
+          <p>para </p> 
+          <strong class="receiver">${message.to}:</strong>
+          <p class="text">${message.text}</p>
         </li>
     `
     } else 
     ulChat.innerHTML += `
       <li class="message reserved">
-        ${message.text};
+        <p class="time">(${message.time})</p>
+        <strong class="sender">${message.from}</strong>
+        <p>reservadamente para </p> 
+        <strong class="receiver">${message.to}:</strong>
+        <p class="text">${message.text}</p>
       </li>
     `
   })
+
+  ulChat.lastElementChild.scrollIntoView();
 }
 
 getMessages();
+
+setInterval(getMessages, 3000);

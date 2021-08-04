@@ -12,12 +12,17 @@ li {
 
 header {
   height: 80px;
+  width: 100vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 21px;
   background-color: #ffffff;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
+
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 header .logo {
@@ -41,6 +46,8 @@ main {
 
 main ul {
   display: flex;
+  margin-top: 70px;
+  padding-bottom: 100px;
   flex-direction: column;
   gap: 4px;
 }
@@ -54,6 +61,18 @@ main ul .message {
   align-items: center;
   font-size: 14px;
   border-radius: 2px;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.message .time {
+  color: #AAAAAA;
+}
+
+.message .sender, .receiver {
+  font-weight: 700;
 }
 
 main ul .message.in-out {
@@ -62,8 +81,8 @@ main ul .message.in-out {
 
 main ul .message.reserved {
   background-color: #FFDEDE;
-  line-height: 20px;
 }
+
 
 footer {
   background-color: purple;
