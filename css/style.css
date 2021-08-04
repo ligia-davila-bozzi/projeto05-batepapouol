@@ -6,12 +6,8 @@ body {
   font-family: Roboto, Arial, Helvetica, sans-serif
 }
 
-.container {
-  width: 375px;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+li {
+  text-decoration: none;
 }
 
 header {
@@ -20,7 +16,7 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 21px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
 }
 
@@ -34,15 +30,22 @@ header .persons-icon {
 }
 
 main {
-  height: 100%;
-  margin-top: 26px;
-  background-color: #E5E5E5;
+  width: 375px;
+  height: calc(100vh - 80px);
+  padding-top: 20px;
+  background-color: #e5e5e5e5;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+main ul {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-main .message {
+main ul .message {
   height: 3rem;
   width: 100%;
   padding: 0 8px;
@@ -53,18 +56,23 @@ main .message {
   border-radius: 2px;
 }
 
-main .message.in-out {
+main ul .message.in-out {
   background-color: #CDCDCD;
 }
 
-main .message.reserved {
+main ul .message.reserved {
   background-color: #FFDEDE;
   line-height: 20px;
 }
 
 footer {
   background-color: purple;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
   height: 80px;
+  width: 100vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
