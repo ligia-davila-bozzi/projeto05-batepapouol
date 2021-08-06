@@ -1,4 +1,5 @@
 let messagesToBePrinted = [];
+let username;
 
 function getMessages() {
   let response = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages");
@@ -12,8 +13,8 @@ function getMessages() {
 function printMessages() {
 
   const ulChat = document.querySelector("ul");
-  ulChat.innerHTML += "";
-
+  ulChat.innerHTML = "";
+  
   messagesToBePrinted.forEach((message) => {
     if (message.type === "status") {
       ulChat.innerHTML += `
@@ -48,6 +49,56 @@ function printMessages() {
   ulChat.lastElementChild.scrollIntoView();
 }
 
-getMessages();
+function enterRoomErrors(error) {
+  const statusCode = error.response.status;
+  
+  if(statusCode === 400) {
+    alert("Já há um usuário online com esse nome! Por favor insira outro nome");
+    enterRoom();
+  }
+}
 
+function enterRoom() {
+  username = prompt("Informe seu lindo nome: ");
+
+  const objRequest =  {
+    name: username
+  }
+
+  axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/participants", objRequest).then(getMessages).catch(enterRoomErrors);
+}
+
+function keepUserLoggedIn() {
+  const objRequest = {
+    name: username
+  }
+
+  axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/status", objRequest).then(console.log("usuário ainda ta logado!!!")).catch((erro) => {
+    console.log(erro.message);
+  });
+}
+
+function sendMessage() {
+  const messageText = document.querySelector(".message-text").value;
+  
+  const objRequest = {
+    from: username,
+    to: "Todos",
+    text: messageText,
+    type: "message"
+  }
+
+  axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages", objRequest).then(getMessages).catch(() => {
+    window.location.reload();
+  })
+}
+
+
+
+
+
+enterRoom();
+
+keepUserLoggedIn();
+setInterval(keepUserLoggedIn, 5000);
 setInterval(getMessages, 3000);
