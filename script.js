@@ -53,19 +53,25 @@ function enterRoomErrors(error) {
   const statusCode = error.response.status;
   
   if(statusCode === 400) {
-    alert("Já há um usuário online com esse nome! Por favor insira outro nome");
     enterRoom();
   }
 }
 
 function enterRoom() {
-  username = prompt("Informe seu lindo nome: ");
+  username = document.querySelector(".username").value
 
   const objRequest =  {
     name: username
   }
 
-  axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/participants", objRequest).then(getMessages).catch(enterRoomErrors);
+  axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/participants", objRequest)
+      .then(() => {
+        console.log("entrou ")     
+        document.querySelector(".loggin-screen").classList.add("hidden");
+        document.querySelector("div.container").classList.remove("hidden");
+        getMessages(); 
+      })
+      .catch(enterRoomErrors);
 }
 
 function keepUserLoggedIn() {
@@ -107,9 +113,6 @@ document.addEventListener("keypress", (e) => {
   }
 })
 
-
-
-enterRoom();
 
 keepUserLoggedIn();
 setInterval(keepUserLoggedIn, 5000);
