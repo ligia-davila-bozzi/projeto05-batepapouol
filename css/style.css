@@ -3,7 +3,11 @@
 }
 
 body {
-  font-family: Roboto, Arial, Helvetica, sans-serif
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+}
+
+button {
+  border: 0;
 }
 
 li {
@@ -57,7 +61,6 @@ main ul .message {
   width: 100%;
   padding: 0 8px;
   background-color: #FFFFFF;
-  display: flex;
   align-items: center;
   font-size: 14px;
   border-radius: 2px;
@@ -71,7 +74,8 @@ main ul .message {
   color: #AAAAAA;
 }
 
-.message .sender, .receiver {
+.message .sender,
+.receiver {
   font-weight: 700;
 }
 
@@ -82,7 +86,6 @@ main ul .message.in-out {
 main ul .message.reserved {
   background-color: #FFDEDE;
 }
-
 
 footer {
   background-color: purple;

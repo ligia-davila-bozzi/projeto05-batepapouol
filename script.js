@@ -93,7 +93,19 @@ function sendMessage() {
   })
 }
 
+function showSideMenu() {
+  document.querySelector(".hidden-menu").classList.toggle("show-menu");
+}
 
+document.addEventListener("keypress", (e) => {
+
+  if(e.key === "Enter") {
+    const sendBtn = document.querySelector(".send-btn");
+
+    sendBtn.click();
+    document.querySelector(".message-text").value = "";
+  }
+})
 
 
 

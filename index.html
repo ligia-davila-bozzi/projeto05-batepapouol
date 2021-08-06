@@ -16,7 +16,7 @@
   <div class="container">
     <header>
       <img class="logo" src="./assets/logoUOL.svg" alt="logoUOL">
-      <img class="persons-icon" src="./assets/persons.svg" alt="persons">
+      <img class="persons-icon" src="./assets/persons.svg" alt="persons" onclick="showSideMenu()">
     </header>
   
     <main>
@@ -27,7 +27,9 @@
 
     <footer>
       <input class ="message-text" type="text" placeholder="Escreva aqui...">
-      <img class="send-btn" src="./assets/sendbtn.svg" alt="sendbtn" onclick="sendMessage()">
+      <button class="send-btn" onclick="sendMessage()">
+        <img src="./assets/sendbtn.svg" alt="sendbtn">
+      </button>
     </footer>
   </div>
 
