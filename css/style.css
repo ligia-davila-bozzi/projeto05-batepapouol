@@ -163,6 +163,12 @@ footer input {
   height: 30px;
   width: 300px;
   font-size: 18px;
+  margin-bottom: 8px;
+}
+
+footer p {
+  font-size: 14px;
+  color: #808080;
 }
 
 footer input::placeholder {

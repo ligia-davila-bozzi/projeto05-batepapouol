@@ -23,7 +23,6 @@ function enterRoom() {
         document.querySelector("div.container").classList.remove("hidden");
         document.querySelector(".hidde-menu").classList.remove("hidden");
         getMessages();
-        setInterval(keepUserLoggedIn, 5000);
       })
       .catch(enterRoomErrors);
 }
@@ -70,16 +69,17 @@ function printMessages() {
           <p class="text">${message.text}</p>
         </li>
     `
-    } else 
-    ulChat.innerHTML += `
-      <li class="message reserved">
-        <p class="time">(${message.time})</p>
-        <strong class="sender">${message.from}</strong>
-        <p>reservadamente para </p> 
-        <strong class="receiver">${message.to}:</strong>
-        <p class="text">${message.text}</p>
-      </li>
+    } else if (message.type === "private_message") {
+      ulChat.innerHTML += `
+        <li class="message reserved">
+          <p class="time">(${message.time})</p>
+          <strong class="sender">${message.from}</strong>
+          <p>reservadamente para </p> 
+          <strong class="receiver">${message.to}:</strong>
+          <p class="text">${message.text}</p>
+        </li>
     `
+    }
   })
 
   ulChat.lastElementChild.scrollIntoView();
@@ -87,12 +87,19 @@ function printMessages() {
 
 function sendMessage() {
   const messageText = document.querySelector(".message-text").value;
+  const receiver = document.querySelector(".nome").innerHTML;
+
+  let visibility = "message"
   
+  if (document.querySelector(".visi").innerHTML === "(Reservadamente)") {
+    visibility = "private_message";
+  }
+
   const objRequest = {
     from: username,
-    to: "Todos",
+    to: receiver,
     text: messageText,
-    type: "message"
+    type: visibility
   }
 
   axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages", objRequest)
@@ -153,6 +160,8 @@ function enableCheckmark(element) {
     });
   
     element.querySelector("ion-icon").classList.remove("hidden");
+
+    document.querySelector(".nome").innerHTML = element.querySelector("p").innerHTML
   }
 
   if (element.classList.contains("visibility-option")) {
@@ -161,10 +170,13 @@ function enableCheckmark(element) {
     });
 
     element.querySelector("ion-icon").classList.remove("hidden");
+
+    document.querySelector(".visi").innerHTML = `(${element.querySelector("p").innerHTML})`
   }
   
 }
 
+setInterval(keepUserLoggedIn, 5000);
 setInterval(getMessages, 3000);
 
 /* aux functions */
