@@ -1,10 +1,46 @@
 let messagesToBePrinted = [];
+let usersOnline = [];
 let username;
 
-function getMessages() {
-  let response = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages");
+function enterRoomErrors(error) {
+  const statusCode = error.response.status;
+  
+  if(statusCode === 400) {
+    alert("Nome já em uso! Por favor, insire um nome diferente");
+  }
+}
 
-  response.then((messages) => {
+function enterRoom() {
+  username = document.querySelector(".username").value
+
+  const objRequest =  {
+    name: username
+  }
+
+  axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/participants", objRequest)
+      .then(() => {     
+        document.querySelector(".loggin-screen").classList.add("hidden");
+        document.querySelector("div.container").classList.remove("hidden");
+        document.querySelector(".hidde-menu").classList.remove("hidden");
+        getMessages();
+        setInterval(keepUserLoggedIn, 5000);
+      })
+      .catch(enterRoomErrors);
+}
+
+function keepUserLoggedIn() {
+  const objRequest = {
+    name: username
+  }
+
+  axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/status", objRequest)
+      .catch(windowReload);
+}
+
+function getMessages() {
+
+  axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages")
+    .then((messages) => {
     messagesToBePrinted = messages.data;
     printMessages();
   });
@@ -12,7 +48,7 @@ function getMessages() {
 
 function printMessages() {
 
-  const ulChat = document.querySelector("ul");
+  const ulChat = document.querySelector(".chat");
   ulChat.innerHTML = "";
   
   messagesToBePrinted.forEach((message) => {
@@ -49,41 +85,6 @@ function printMessages() {
   ulChat.lastElementChild.scrollIntoView();
 }
 
-function enterRoomErrors(error) {
-  const statusCode = error.response.status;
-  
-  if(statusCode === 400) {
-    enterRoom();
-  }
-}
-
-function enterRoom() {
-  username = document.querySelector(".username").value
-
-  const objRequest =  {
-    name: username
-  }
-
-  axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/participants", objRequest)
-      .then(() => {
-        console.log("entrou ")     
-        document.querySelector(".loggin-screen").classList.add("hidden");
-        document.querySelector("div.container").classList.remove("hidden");
-        getMessages(); 
-      })
-      .catch(enterRoomErrors);
-}
-
-function keepUserLoggedIn() {
-  const objRequest = {
-    name: username
-  }
-
-  axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/status", objRequest).then(console.log("usuário ainda ta logado!!!")).catch((erro) => {
-    console.log(erro.message);
-  });
-}
-
 function sendMessage() {
   const messageText = document.querySelector(".message-text").value;
   
@@ -94,13 +95,81 @@ function sendMessage() {
     type: "message"
   }
 
-  axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages", objRequest).then(getMessages).catch(() => {
-    window.location.reload();
-  })
+  axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages", objRequest)
+      .then(getMessages)
+      .catch(windowReload);
+
+  document.querySelector(".message-text").value = "";
 }
 
 function showSideMenu() {
-  document.querySelector(".hidden-menu").classList.toggle("show-menu");
+  document.querySelector(".side-menu").classList.toggle("show-menu");
+  document.querySelector(".film").classList.toggle("hidden");
+  getOnlineUsers();
+  setInterval(getOnlineUsers, 10000);
+}
+
+function getOnlineUsers() {
+
+  axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/participants")
+      .then((users) => {
+        usersOnline = users.data;
+        printOnlineUsers()
+      });
+}
+
+function printOnlineUsers() {
+
+  const ulUsers = document.querySelector(".contacts-online");
+  ulUsers.innerHTML = `
+    <li class="user" onclick="enableCheckmark(this)">
+      <div class="left">
+        <img src="./assets/persons.svg" />
+        <p>Todos</p>
+      </div>
+      <ion-icon name="checkmark-sharp" class="checkmark hidden"></ion-icon> 
+    </li>
+  `;
+
+  usersOnline.forEach((user) => {
+    ulUsers.innerHTML += `
+    <li class="user" onclick="enableCheckmark(this)">
+      <div class="left">
+        <img src="./assets/usericon.svg" />
+        <p>${user.name}</p>
+      </div>
+      <ion-icon name="checkmark-sharp" class="checkmark hidden"></ion-icon> 
+    </li>
+  `
+  })
+}
+
+function enableCheckmark(element) {
+  console.log(element);
+
+  if(element.classList.contains("user")) {
+    document.querySelectorAll(".checkmark").forEach((checkmark) => {
+      checkmark.classList.add("hidden");
+    });
+  
+    element.querySelector("ion-icon").classList.remove("hidden");
+  }
+
+  if (element.classList.contains("visibility-option")) {
+    document.querySelectorAll(".checkmark-v").forEach((checkmark) => {
+      checkmark.classList.add("hidden");
+    });
+
+    element.querySelector("ion-icon").classList.remove("hidden");
+  }
+  
+}
+
+setInterval(getMessages, 3000);
+
+/* aux functions */
+function windowReload() {
+  window.location.reload();
 }
 
 document.addEventListener("keypress", (e) => {
@@ -109,11 +178,5 @@ document.addEventListener("keypress", (e) => {
     const sendBtn = document.querySelector(".send-btn");
 
     sendBtn.click();
-    document.querySelector(".message-text").value = "";
   }
 })
-
-
-keepUserLoggedIn();
-setInterval(keepUserLoggedIn, 5000);
-setInterval(getMessages, 3000);

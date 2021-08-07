@@ -28,7 +28,7 @@
     </header>
   
     <main>
-      <ul>
+      <ul class="chat">
         <!-- inserted by js-->
      </ul>
     </main>
@@ -39,8 +39,46 @@
         <img src="./assets/sendbtn.svg" alt="sendbtn">
       </button>
     </footer>
+    
+    <aside class="side-menu">
+      <div class="contacts">
+        <div class="top">
+          Escolha um contato para enviar mensagem:
+        </div>
+        <ul class="contacts-online">
+          <!-- inserted by js-->
+        </ul>
+      </div>
+  
+      <div class="visibility">
+        <div class="top">
+          Escolha a visibilidade
+        </div>
+        <ul>
+          <li class="visibility-option" onclick="enableCheckmark(this)">
+            <div class="left">
+              <img src="./assets/padlock.svg" />
+              <p>Público</p>
+            </div>
+            <ion-icon name="checkmark-sharp" class="checkmark-v hidden"></ion-icon>
+          </li>
+          <li class="visibility-option" onclick="enableCheckmark(this)">
+            <div class="left">
+              <img src="./assets/padlock.svg" />
+              <p>Reservado</p>
+            </div>
+            <ion-icon name="checkmark-sharp" class="checkmark-v hidden"></ion-icon>
+          </li>
+        </ul>
+      </div>
+    </aside>
+  
+    <div class="film on hidden" onclick="showSideMenu()">qweeweeee</div> 
   </div>
 
+   
+
+  <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="script.js"></script>
 </body>
