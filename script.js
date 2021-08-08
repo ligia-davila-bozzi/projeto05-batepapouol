@@ -1,6 +1,7 @@
 let messagesToBePrinted = [];
 let usersOnline = [];
 let username;
+let loadingID;
 
 function enterRoomErrors(error) {
   const statusCode = error.response.status;
@@ -11,7 +12,8 @@ function enterRoomErrors(error) {
 }
 
 function enterRoom() {
-  username = document.querySelector(".username").value
+  username = document.querySelector(".username").value;
+  loading();
 
   const objRequest =  {
     name: username
@@ -19,6 +21,7 @@ function enterRoom() {
 
   axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/participants", objRequest)
       .then(() => {     
+        clearInterval(loadingID);
         document.querySelector(".loggin-screen").classList.add("hidden");
         document.querySelector("div.container").classList.remove("hidden");
         document.querySelector(".hidde-menu").classList.remove("hidden");
@@ -69,7 +72,7 @@ function printMessages() {
           <p class="text">${message.text}</p>
         </li>
     `
-    } else if (message.type === "private_message") {
+    } else if (message.type === "private_message" && (message.to === username || message.from === username) ) {
       ulChat.innerHTML += `
         <li class="message reserved">
           <p class="time">(${message.time})</p>
@@ -91,7 +94,7 @@ function sendMessage() {
 
   let visibility = "message"
   
-  if (document.querySelector(".visi").innerHTML === "(Reservadamente)") {
+  if (document.querySelector(".visi").innerHTML === "(Reservado)") {
     visibility = "private_message";
   }
 
@@ -143,7 +146,7 @@ function printOnlineUsers() {
     <li class="user" onclick="enableCheckmark(this)">
       <div class="left">
         <img src="./assets/usericon.svg" />
-        <p>${user.name}</p>
+        <p class="user-field">${user.name}</p>
       </div>
       <ion-icon name="checkmark-sharp" class="checkmark hidden"></ion-icon> 
     </li>
@@ -152,7 +155,6 @@ function printOnlineUsers() {
 }
 
 function enableCheckmark(element) {
-  console.log(element);
 
   if(element.classList.contains("user")) {
     document.querySelectorAll(".checkmark").forEach((checkmark) => {
@@ -161,7 +163,7 @@ function enableCheckmark(element) {
   
     element.querySelector("ion-icon").classList.remove("hidden");
 
-    document.querySelector(".nome").innerHTML = element.querySelector("p").innerHTML
+    document.querySelector(".nome").innerHTML = element.querySelector("p").innerHTML;
   }
 
   if (element.classList.contains("visibility-option")) {
@@ -171,9 +173,8 @@ function enableCheckmark(element) {
 
     element.querySelector("ion-icon").classList.remove("hidden");
 
-    document.querySelector(".visi").innerHTML = `(${element.querySelector("p").innerHTML})`
+    document.querySelector(".visi").innerHTML = `(${element.querySelector("p").innerHTML})`;
   }
-  
 }
 
 setInterval(keepUserLoggedIn, 5000);
@@ -182,6 +183,14 @@ setInterval(getMessages, 3000);
 /* aux functions */
 function windowReload() {
   window.location.reload();
+}
+
+function loading() {
+  document.querySelector(".input-area").innerHTML = `
+    <div class="input-area">
+      <img src="./assets/loading.png" />
+      <p>Entrando...</p>
+  `
 }
 
 document.addEventListener("keypress", (e) => {
