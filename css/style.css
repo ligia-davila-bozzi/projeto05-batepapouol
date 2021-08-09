@@ -114,7 +114,7 @@ main ul {
 
 main ul .message {
   height: 3rem;
-  width: 100%;
+  width: 100vw;
   padding: 0 8px;
   background-color: #FFFFFF;
   align-items: center;
