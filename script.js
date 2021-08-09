@@ -132,7 +132,7 @@ function printOnlineUsers() {
 
   const ulUsers = document.querySelector(".contacts-online");
   ulUsers.innerHTML = `
-    <li class="user" onclick="enableCheckmark(this)">
+    <li class="user" onclick="selectReceiverAndVisibilityOfMessage(this)">
       <div class="left">
         <img src="./assets/persons.svg" />
         <p>Todos</p>
@@ -143,7 +143,7 @@ function printOnlineUsers() {
 
   usersOnline.forEach((user) => {
     ulUsers.innerHTML += `
-    <li class="user" onclick="enableCheckmark(this)">
+    <li class="user" onclick="selectReceiverAndVisibilityOfMessage(this)">
       <div class="left">
         <img src="./assets/usericon.svg" />
         <p class="user-field">${user.name}</p>
@@ -154,7 +154,7 @@ function printOnlineUsers() {
   })
 }
 
-function enableCheckmark(element) {
+function selectReceiverAndVisibilityOfMessage(element) {
 
   if(element.classList.contains("user")) {
     document.querySelectorAll(".checkmark").forEach((checkmark) => {
