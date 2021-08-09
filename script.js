@@ -7,7 +7,7 @@ function enterRoomErrors(error) {
   const statusCode = error.response.status;
   
   if(statusCode === 400) {
-    alert("Nome já em uso! Por favor, insire um nome diferente");
+    alert("Nome já em uso! Por favor, insira um nome diferente");
   }
 }
 
