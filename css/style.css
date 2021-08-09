@@ -213,13 +213,6 @@ aside ul {
   font-size: 16px;
 }
 
-aside ul.contacts-online {
-  max-height: 300px;
-  overflow-y: scroll;
-  overflow-x: hidden;
-}
-
-
 aside li {
   display: flex;
   align-items: center;
