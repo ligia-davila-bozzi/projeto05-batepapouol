@@ -210,10 +210,15 @@ aside ul {
   flex-direction: column;
   justify-content: center;
   gap: 12px;
-  overflow-y: scroll;
-
   font-size: 16px;
 }
+
+aside ul.contacts-online {
+  max-height: 300px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
 
 aside li {
   display: flex;

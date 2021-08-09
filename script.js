@@ -90,7 +90,7 @@ function printMessages() {
 
 function sendMessage() {
   const messageText = document.querySelector(".message-text").value;
-  const receiver = document.querySelector(".nome").innerHTML;
+  const receiver = document.querySelector(".name").innerHTML;
 
   let visibility = "message"
   
@@ -163,7 +163,7 @@ function enableCheckmark(element) {
   
     element.querySelector("ion-icon").classList.remove("hidden");
 
-    document.querySelector(".nome").innerHTML = element.querySelector("p").innerHTML;
+    document.querySelector(".name").innerHTML = element.querySelector("p").innerHTML;
   }
 
   if (element.classList.contains("visibility-option")) {
